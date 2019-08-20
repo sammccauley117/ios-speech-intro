@@ -84,10 +84,10 @@ public class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         guard let recognitionRequest = recognitionRequest else { fatalError("Unable to create a SFSpeechAudioBufferRecognitionRequest object") }
         recognitionRequest.shouldReportPartialResults = true
         
-        // Keep speech recognition data on device
-        if #available(iOS 13, *) {
-            recognitionRequest.requiresOnDeviceRecognition = false
-        }
+//        // Keep speech recognition data on device
+//        if #available(iOS 13, *) {
+//            recognitionRequest.requiresOnDeviceRecognition = false
+//        }
         
         // Create a recognition task for the speech recognition session.
         // Keep a reference to the task so that it can be canceled.
@@ -95,10 +95,18 @@ public class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             var isFinal = false
             
             if let result = result {
-                // Update the text view with the results.
-                self.textView.text = result.bestTranscription.formattedString
+                // self.textView.text = result.bestTranscription.formattedString
+                for transcription in result.transcriptions {
+                    var text : String = ""
+                    let count : Int = transcription.segments.count
+                    if count >= 2 {
+                        text += transcription.segments[count - 2].substring + " "
+                        text += transcription.segments[count - 1].substring
+                    }
+                    self.changeColor(text)
+                }
+                
                 isFinal = result.isFinal
-                print("Text \(result.bestTranscription.formattedString)")
             }
             
             if error != nil || isFinal {
@@ -124,7 +132,7 @@ public class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         try audioEngine.start()
         
         // Let the user know to start talking.
-        textView.text = "(Go ahead, I'm listening)"
+        textView.text = "Speak up big hoss"
     }
     
     // MARK: SFSpeechRecognizerDelegate
@@ -136,6 +144,70 @@ public class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         } else {
             recordButton.isEnabled = false
             recordButton.setTitle("Recognition Not Available", for: .disabled)
+        }
+    }
+    
+    private func changeColor(_ text : String) {
+        print(text)
+        if text.contains("text") {
+            if text.contains("red") || text.contains("read") {
+                self.textView.textColor = UIColor.red
+                self.textView.text = "Making text red"
+            } else if text.contains("black") {
+                self.textView.textColor = UIColor.black
+                self.textView.text = "Making text black"
+            } else if text.contains("blue") {
+                self.textView.textColor = UIColor.blue
+                self.textView.text = "Making text blue"
+            } else if text.contains("green") {
+                self.textView.textColor = UIColor.green
+                self.textView.text = "Making text green"
+            } else if text.contains("yellow") {
+                self.textView.textColor = UIColor.yellow
+                self.textView.text = "Making text yellow"
+            } else if text.contains("orange") {
+                self.textView.textColor = UIColor.orange
+                self.textView.text = "Making text orange"
+            } else if text.contains("white") {
+                self.textView.textColor = UIColor.white
+                self.textView.text = "Making text white"
+            } else if text.contains("brown") {
+                self.textView.textColor = UIColor.brown
+                self.textView.text = "Making text brown"
+            } else if text.contains("purple") {
+                self.textView.textColor = UIColor.purple
+                self.textView.text = "Making text purple"
+            }
+        }
+        if text.contains("background") {
+            if text.contains("red") || text.contains("read") {
+                self.textView.backgroundColor = UIColor.red
+                self.textView.text = "Making background red"
+            } else if text.contains("black") {
+                self.textView.backgroundColor = UIColor.black
+                self.textView.text = "Making background black"
+            } else if text.contains("blue") {
+                self.textView.backgroundColor = UIColor.blue
+                self.textView.text = "Making background blue"
+            } else if text.contains("green") {
+                self.textView.backgroundColor = UIColor.green
+                self.textView.text = "Making background green"
+            } else if text.contains("yellow") {
+                self.textView.backgroundColor = UIColor.yellow
+                self.textView.text = "Making background yellow"
+            } else if text.contains("orange") {
+                self.textView.backgroundColor = UIColor.orange
+                self.textView.text = "Making background orange"
+            } else if text.contains("white") {
+                self.textView.backgroundColor = UIColor.white
+                self.textView.text = "Making background white"
+            } else if text.contains("brown") {
+                self.textView.backgroundColor = UIColor.brown
+                self.textView.text = "Making background brown"
+            } else if text.contains("purple") {
+                self.textView.backgroundColor = UIColor.purple
+                self.textView.text = "Making background purple"
+            }
         }
     }
     
